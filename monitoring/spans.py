@@ -3,7 +3,8 @@ import time, uuid
 
 spans = []
 span_stack = []
-class Track_Span:
+
+class track_span:
     def __init__(self, name):
         self.name = name
 

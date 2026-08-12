@@ -5,7 +5,7 @@ from tools.google_auth import gmail_service
 from langchain_core.tools import tool
 from typing import Annotated, Optional
 
-from monitoring.monitor import track_span, span_stack, spans
+from monitoring.monitor import track_span
 
 
 @tool

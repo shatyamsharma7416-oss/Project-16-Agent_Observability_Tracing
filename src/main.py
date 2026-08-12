@@ -1,4 +1,5 @@
 import os
+import uuid
 from dotenv import load_dotenv
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
@@ -14,7 +15,8 @@ from langgraph.checkpoint.memory import InMemorySaver
 from tools.gmail_tools import read_mail, send_mail
 from src.function_call import tool_executor
 from monitoring.monitor import track_span, span_stack, spans
-
+ 
+TRACK_ID = str(uuid.uuid4())
 
 load_dotenv()
 
