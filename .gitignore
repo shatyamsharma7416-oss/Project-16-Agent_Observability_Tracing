@@ -1,0 +1,6 @@
+.env
+config.toml
+structure.md
+*.ipynb
+*__pycache__
+data/auth_crediantials
