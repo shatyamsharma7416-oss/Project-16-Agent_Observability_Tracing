@@ -5,25 +5,29 @@ from tools.google_auth import gmail_service
 from langchain_core.tools import tool
 from typing import Annotated, Optional
 
+from monitoring.monitor import track_span, span_stack, spans
+
+
 @tool
 def read_mail(
     n: Annotated[Optional[int], "Number of recent mails to read."] = 5
 ) -> list:
     """Read the most recent n messages from the inbox."""
-    if n is None or n <= 0:
-        return []
+    with track_span("read_mail_fun_call"):
+        if n is None or n <= 0:
+            return []
 
-    results = (
-        gmail_service.users().messages()
-        .list(userId="me", labelIds=["INBOX"], maxResults=n)
-        .execute()
-    )
-    messages = results.get("messages", [])
-    inbox = []
-    for message in messages:
-        msg = gmail_service.users().messages().get(userId="me", id=message["id"]).execute()
-        inbox.append({"id": message["id"], "snippet": msg["snippet"]})
-    return inbox
+        results = (
+            gmail_service.users().messages()
+            .list(userId="me", labelIds=["INBOX"], maxResults=n)
+            .execute()
+        )
+        messages = results.get("messages", [])
+        inbox = []
+        for message in messages:
+            msg = gmail_service.users().messages().get(userId="me", id=message["id"]).execute()
+            inbox.append({"id": message["id"], "snippet": msg["snippet"]})
+        return inbox
 
 
 @tool
@@ -33,15 +37,16 @@ def send_mail(
     body: Annotated[str, "Plain text email body"]
 ):
     """Sends an email via the Gmail API. Use this when the user asks to email someone."""
-    message = EmailMessage()
-    message.set_content(body)
-    message['to'] = to
-    message['subject'] = subject
-    
-    # Gmail API requires base64 encoding
-    encoded_message = {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode()}
-    return gmail_service.users().messages().send(userId="me", body=encoded_message).execute()
-    
+    with track_span("sendin_mail_fun_call"):
+        message = EmailMessage()
+        message.set_content(body)
+        message['to'] = to
+        message['subject'] = subject
+        
+        # Gmail API requires base64 encoding
+        encoded_message = {'raw': base64.urlsafe_b64encode(message.as_bytes()).decode()}
+        return gmail_service.users().messages().send(userId="me", body=encoded_message).execute()
+        
 
 def search_mail():
     pass
