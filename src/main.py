@@ -14,7 +14,7 @@ from langgraph.prebuilt import ToolNode
 from langgraph.checkpoint.memory import InMemorySaver
 from tools.gmail_tools import read_mail, send_mail
 from src.function_call import tool_executor
-from monitoring.monitor import track_span, span_stack, spans
+from monitoring.spans import track_span, span_stack, spans
  
 TRACK_ID = str(uuid.uuid4())
 

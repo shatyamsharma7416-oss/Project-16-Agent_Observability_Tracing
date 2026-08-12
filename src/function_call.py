@@ -2,7 +2,7 @@ import json
 from langgraph.types import interrupt
 from langchain_core.messages import ToolMessage
 from src.tool_registry import TOOL_REGISTRY
-from monitoring.monitor import track_span
+from monitoring.spans import track_span
 
 def format_preview(tool_name, args_dict):
     """Human-readable summary of what's about to happen."""
