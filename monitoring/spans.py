@@ -3,6 +3,15 @@ import time, uuid
 
 spans = []
 span_stack = []
+current_trace_id = None
+
+
+def start_trace():
+    """Call this once per agent run (top of main.py) to start a fresh trace."""
+    global current_trace_id
+    current_trace_id = str(uuid.uuid4())[:8]
+    return current_trace_id
+
 
 class track_span:
     def __init__(self, name):
@@ -19,6 +28,7 @@ class track_span:
     def __exit__(self, exc_type, exc, tb):
         span_stack.pop()
         spans.append({
+            "trace_id": current_trace_id,
             "span_id":self.span_id,
             "parent_id":self.parent_id,
             "name":self.name,

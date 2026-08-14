@@ -32,7 +32,7 @@ def tool_executor(state):
             elif entry["reversibility"] == "irreversible":
                 decision = interrupt({
                     "type": "approval_request",
-                    "tool_name": "tool_name",
+                    "tool_name": tool_name,
                     "args": args_dict,
                     "preview": format_preview(tool_name, args_dict),
                 })
