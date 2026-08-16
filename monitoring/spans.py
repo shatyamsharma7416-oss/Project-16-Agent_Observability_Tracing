@@ -10,6 +10,8 @@ def start_trace():
     """Call this once per agent run (top of main.py) to start a fresh trace."""
     global current_trace_id
     current_trace_id = str(uuid.uuid4())[:8]
+    spans.clear()
+    span_stack.clear()
     return current_trace_id
 
 

@@ -50,5 +50,5 @@ def tool_executor(state):
                 ToolMessage(content=str(result), tool_call_id=tool_call["id"])
             )
 
-            return {"messages": outputs}
+        return {"messages": outputs}
 
